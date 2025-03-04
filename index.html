@@ -25,12 +25,15 @@
         Balance: <span id="balance">🔒</span>
     </div>
 
-    <script>
+   <h2 id="balanceText" style="display: none;">Balance: ₹0</h2>
+
+<script>
   function fetchBalance() {
     fetch("https://charan-hamuman.onrender.com/get-balance")
       .then(response => response.json())
       .then(data => {
-        if (data.balance) {
+        console.log("Balance Data:", data); // Debugging - See if API is returning balance
+        if (data.balance !== undefined) {
           document.getElementById("balanceText").innerText = "Balance: ₹" + data.balance;
           document.getElementById("balanceText").style.display = "block"; // Show balance
         }
@@ -38,19 +41,17 @@
       .catch(error => console.error("Error fetching balance:", error));
   }
 
-  // Show balance after payment success
+  // Fetch balance when the page loads
+  window.onload = function() {
+    fetchBalance();
+  };
+
+  // Fetch balance again after successful payment
   function onPaymentSuccess() {
-    fetchBalance(); // Fetch updated balance
+    fetchBalance(); 
   }
 </script>
 
-<h2 id="balanceText" style="display: none;">Balance:</h2>
-
-<form>
-  <script src="https://checkout.razorpay.com/v1/payment-button.js"
-    data-payment_button_id="pl_Q1VPKynGzRQl5H"
-    async>
-  </script>
 </form>
 
 
